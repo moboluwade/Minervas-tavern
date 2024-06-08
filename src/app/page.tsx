@@ -1,15 +1,29 @@
 import Image from "next/image";
+import { SignInButton } from "./api/(auth)/auth";
+import { auth } from "./auth";
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth()
+  session?.user && console.log(session)
+
+
   return (
-    <div>
-      <div className="flex flex-row justify-center items-center text-3xl font-semibold tracking-wider shadow-md  h-screen">
-        Minerva
-      </div>
-      <div className="w-fit m-auto pb-8">
-        {/* <iframe width="400" height="200" allowFullScreen src="https://www.youtube.com/embed/-AdXIC44b7Q" title="How to Manage Multiple Interests" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> */}
-      </div>
+    <div className="h-screen w-full">
+      <div className="absolute top-0 right-0 bg-gray-600 px-8">
+        <div className="flex flex-row gap-2">
+          {session?.user?.image && <Image className="w-8 h-8 rounded-full" width={15} height={15} src={session.user.image} alt="profile" />}
 
+          {session?.user && session?.user.name}
+        </div>
+      </div>
+      <div className="flex flex-col justify-center h-full items-center gap-4">
+        <span className="text-3xl font-semibold tracking-wider ">
+          Minerva
+        </span>
+        <SignInButton />
+
+
+      </div>
     </div>
   );
 }
